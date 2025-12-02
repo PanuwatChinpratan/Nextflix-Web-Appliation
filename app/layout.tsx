@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nextflix | Stream boldly",
+  title: "Nextflix Web Application",
   description: "Nextflix — cinematic streaming UI built with Next.js 16",
 };
 
