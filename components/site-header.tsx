@@ -60,7 +60,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 text-foreground dark:text-white md:flex lg:gap-4">
           <SearchPanel />
-          <span className="text-sm text-white/80">Kids</span>
+          <span className="text-sm text-foreground/80 dark:text-white/80">Kids</span>
           <UserRound className="h-6 w-6 cursor-pointer" aria-hidden="true" />
           <ClientModeToggle />
           <ClientLanguageToggle />

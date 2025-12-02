@@ -25,7 +25,7 @@ export function LanguageToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/10"
+          className="text-foreground hover:bg-black/5 dark:text-white dark:hover:bg-white/10"
           aria-label="Change language"
         >
           <Globe2 className="h-5 w-5" />

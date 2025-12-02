@@ -20,7 +20,7 @@ export function ModeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/10 dark:text-white"
+          className="text-foreground hover:bg-black/5 dark:text-white dark:hover:bg-white/10"
           aria-label="Toggle theme"
         >
           <Sun className="h-5 w-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
