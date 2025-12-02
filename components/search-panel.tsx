@@ -20,10 +20,15 @@ import { cn } from "@/lib/utils";
 
 export function SearchPanel() {
   const { t } = useI18n();
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 220);
@@ -59,6 +64,20 @@ export function SearchPanel() {
     if (!debouncedQuery) return t("search.action");
     return t("search.results", { query: debouncedQuery });
   }, [debouncedQuery, t]);
+
+  if (!mounted) {
+    return (
+      <button
+        type="button"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+        aria-label={t("search.action")}
+        aria-disabled
+        disabled
+      >
+        <Search className="h-5 w-5" aria-hidden="true" />
+      </button>
+    );
+  }
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>

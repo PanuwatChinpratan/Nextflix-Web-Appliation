@@ -20,10 +20,10 @@ export function HomeContent({
   initialTrending,
   initialPopular,
 }: HomeContentProps) {
-  const {
-    data: trending,
-    isLoading: trendingLoading,
-  } = useTrendingMovies(1, initialTrending);
+  const { data: trending, isLoading: trendingLoading } = useTrendingMovies(
+    1,
+    initialTrending
+  );
   const {
     data: popular,
     isLoading: popularLoading,
@@ -39,7 +39,7 @@ export function HomeContent({
     // Deterministically vary the hero pick without impure randomness.
     const seed = pool.reduce(
       (sum, movie, idx) => sum + movie.id * (idx + 1),
-      0,
+      0
     );
     const index = seed % pool.length;
 
@@ -61,7 +61,7 @@ export function HomeContent({
 
         <section
           id="popular"
-          className="relative z-20 -mt-12 px-4 pb-10 sm:px-8 lg:px-12"
+          className="relative z-20 -mt-8 px-4 pb-10 sm:px-8 lg:pl-12"
         >
           <MovieRow
             title="Popular on Netflix"
