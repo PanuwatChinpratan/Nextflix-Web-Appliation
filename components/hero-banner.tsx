@@ -30,7 +30,7 @@ export function HeroBanner({
   return (
     <div
       id="hero"
-      className="relative isolate h-[70vh] min-h-[460px] w-full overflow-hidden bg-black text-white sm:h-[75vh]"
+      className="relative isolate h-[70vh] min-h-[460px] w-full overflow-hidden bg-background text-foreground dark:bg-black dark:text-white sm:h-[75vh]"
     >
       {movie.backdropUrl ? (
         <Image
@@ -45,8 +45,8 @@ export function HeroBanner({
         <div className="absolute inset-0 bg-neutral-900" />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/40 to-black/10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/20 opacity-90 dark:from-[#0f0f0f] dark:via-[#0f0f0f]/40 dark:to-black/10 dark:opacity-100" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent opacity-90 dark:from-black dark:via-black/40 dark:to-transparent" />
 
       {/* Mobile overlay nav */}
       <div className="absolute left-0 right-0 top-0 flex items-center justify-between px-4 py-4 sm:hidden">
@@ -74,10 +74,10 @@ export function HeroBanner({
           <h1 className="text-4xl font-black leading-tight sm:text-5xl md:text-6xl">
             {movie.title}
           </h1>
-          <p className="text-sm font-semibold text-white/85 sm:text-base">
+          <p className="text-sm font-semibold text-foreground/80 dark:text-white/85 sm:text-base">
             #1 in TV Shows Today
           </p>
-          <p className="line-clamp-3 max-w-3xl text-sm text-white/85 sm:line-clamp-4 sm:text-lg">
+          <p className="line-clamp-3 max-w-3xl text-sm text-foreground/80 dark:text-white/85 sm:line-clamp-4 sm:text-lg">
             {movie.overview}
           </p>
         </div>
@@ -86,7 +86,7 @@ export function HeroBanner({
           {playHref && (
             <Button
               size="lg"
-              className="w-full justify-center bg-white text-black hover:bg-white/80 sm:w-auto"
+              className="w-full justify-center bg-black text-white hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/80 sm:w-auto"
               aria-label={`Play ${movie.title}`}
               asChild
             >
@@ -100,7 +100,7 @@ export function HeroBanner({
             <Button
               size="lg"
               variant="secondary"
-              className="w-full justify-center bg-white/20 text-white backdrop-blur hover:bg-white/30 sm:w-auto"
+              className="w-full justify-center bg-black/10 text-foreground backdrop-blur hover:bg-black/15 dark:bg-white/20 dark:text-white dark:hover:bg-white/30 sm:w-auto"
               aria-label={`More info about ${movie.title}`}
               asChild
             >

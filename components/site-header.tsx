@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Search, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import Link from "next/link";
 
+import { SearchPanel } from "@/components/search-panel";
 import { useI18n } from "@/lib/i18n";
 
 const ClientModeToggle = dynamic(
@@ -35,7 +36,7 @@ export function SiteHeader() {
   ];
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 hidden bg-gradient-to-b from-black/80 via-black/20 to-transparent px-8 py-6 sm:block">
+    <header className="fixed left-0 right-0 top-0 z-40 hidden bg-gradient-to-b from-white/90 via-white/55 to-white/10 px-8 py-6 text-foreground shadow-sm backdrop-blur-sm dark:from-black/80 dark:via-black/20 dark:to-transparent dark:text-white sm:block">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
         <div className="flex items-center gap-8">
           <Link
@@ -44,12 +45,12 @@ export function SiteHeader() {
           >
             Netflix
           </Link>
-          <nav className="hidden items-center gap-5 text-sm font-semibold text-white/80 lg:flex">
+          <nav className="hidden items-center gap-5 text-sm font-semibold text-foreground/80 dark:text-white/80 lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="hover:text-white"
+                className="hover:text-foreground dark:hover:text-white"
               >
                 {item.label}
               </Link>
@@ -57,8 +58,8 @@ export function SiteHeader() {
           </nav>
         </div>
 
-        <div className="hidden items-center gap-4 text-white lg:flex">
-          <Search className="h-5 w-5 cursor-pointer" aria-hidden="true" />
+        <div className="hidden items-center gap-4 text-foreground dark:text-white lg:flex">
+          <SearchPanel />
           <span className="text-sm text-white/80">Kids</span>
           <UserRound className="h-6 w-6 cursor-pointer" aria-hidden="true" />
           <ClientModeToggle />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { HeroBanner } from "@/components/hero-banner";
 import { FavoritesRow } from "@/components/favorites-row";
@@ -20,12 +20,9 @@ export function HomeContent({
   initialTrending,
   initialPopular,
 }: HomeContentProps) {
-  const [hero, setHero] = useState<MovieSummary | undefined>(initialHero);
-
   const {
     data: trending,
     isLoading: trendingLoading,
-    isError: trendingError,
   } = useTrendingMovies(1, initialTrending);
   const {
     data: popular,
@@ -33,25 +30,28 @@ export function HomeContent({
     isError: popularError,
   } = usePopularMovies(1, initialPopular);
 
-  const heroCandidate = useMemo(() => {
+  const hero = useMemo(() => {
+    if (initialHero) return initialHero;
+
     const pool = [...(trending?.results ?? []), ...(popular?.results ?? [])];
     if (pool.length === 0) return undefined;
-    const index = Math.floor(Math.random() * pool.length);
-    return pool[index];
-  }, [popular?.results, trending?.results]);
 
-  useEffect(() => {
-    if (!hero && heroCandidate) {
-      setHero(heroCandidate);
-    }
-  }, [hero, heroCandidate]);
+    // Deterministically vary the hero pick without impure randomness.
+    const seed = pool.reduce(
+      (sum, movie, idx) => sum + movie.id * (idx + 1),
+      0,
+    );
+    const index = seed % pool.length;
+
+    return pool[index];
+  }, [initialHero, popular?.results, trending?.results]);
 
   const heroLoading = trendingLoading && !hero;
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_10%_20%,rgba(0,0,0,0.08),transparent_30%),radial-gradient(circle_at_85%_10%,rgba(0,0,0,0.06),transparent_28%),linear-gradient(to_bottom,#f7f7f7,#eaeaea_45%,#f7f7f7)] text-foreground dark:bg-gradient-to-b dark:from-black dark:via-neutral-950 dark:to-black">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_10%_20%,rgba(0,0,0,0.08),transparent_30%),radial-gradient(circle_at_85%_10%,rgba(0,0,0,0.06),transparent_28%),linear-gradient(to_bottom,#f7f7f7,#eaeaea_45%,#f7f7f7)] text-foreground dark:bg-linear-to-b dark:from-black dark:via-neutral-950 dark:to-black">
       <SiteHeader />
-      <main className="flex flex-col bg-[radial-gradient(circle_at_40%_-10%,rgba(0,0,0,0.08),transparent_38%),radial-gradient(circle_at_80%_-5%,rgba(0,0,0,0.06),transparent_32%)] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.5),_rgba(0,0,0,0.15)_55%,_rgba(0,0,0,0)_75%)]">
+      <main className="flex flex-col bg-[radial-gradient(circle_at_40%_-10%,rgba(0,0,0,0.08),transparent_38%),radial-gradient(circle_at_80%_-5%,rgba(0,0,0,0.06),transparent_32%)] dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.5),rgba(0,0,0,0.15)_55%,rgba(0,0,0,0)_75%)]">
         <HeroBanner
           movie={hero}
           isLoading={heroLoading}

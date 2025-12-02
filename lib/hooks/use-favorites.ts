@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import { favoritesApi } from "../api-client";
 import type { FavoritePayload } from "../types/favorites";
@@ -33,16 +34,23 @@ export function useFavorites(userId = "guest") {
     favoritesQuery.data?.some((fav) => fav.movieId === movieId) ?? false;
 
   const toggleFavorite = async (movie: MovieSummary) => {
-    if (isFavorite(movie.id)) {
-      await removeMutation.mutateAsync(movie.id);
-    } else {
-      const payload: FavoritePayload = {
-        userId,
-        movieId: movie.id,
-        title: movie.title,
-        posterUrl: movie.posterUrl ?? movie.backdropUrl ?? undefined,
-      };
-      await saveMutation.mutateAsync(payload);
+    try {
+      if (isFavorite(movie.id)) {
+        await removeMutation.mutateAsync(movie.id);
+        toast.success(`Removed "${movie.title}" from My List`);
+      } else {
+        const payload: FavoritePayload = {
+          userId,
+          movieId: movie.id,
+          title: movie.title,
+          posterUrl: movie.posterUrl ?? movie.backdropUrl ?? undefined,
+        };
+        await saveMutation.mutateAsync(payload);
+        toast.success(`Added "${movie.title}" to My List`);
+      }
+    } catch (error) {
+      toast.error("Unable to update My List. Please try again.");
+      throw error;
     }
   };
 
