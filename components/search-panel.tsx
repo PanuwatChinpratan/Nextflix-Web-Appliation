@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -83,7 +84,9 @@ export function SearchPanel() {
           <SheetTitle className="text-base font-semibold tracking-tight text-foreground dark:text-white">
             {titleText}
           </SheetTitle>
-          <p className="text-sm text-muted-foreground">{t("search.tip")}</p>
+          <SheetDescription className="text-sm text-muted-foreground">
+            {t("search.tip")}
+          </SheetDescription>
           <form
             onSubmit={(event) => event.preventDefault()}
             className="group relative mt-1 flex items-center gap-2 rounded-xl border border-black/5 bg-white/80 px-3 py-2 shadow-sm backdrop-blur-sm transition focus-within:ring-2 focus-within:ring-red-500 focus-within:ring-offset-0 dark:border-white/10 dark:bg-white/5"

@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { Cast, Info, Play, UserRound } from "lucide-react";
+import { Info, Play, UserRound } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MovieSummary } from "@/lib/types/movies";
+import { SearchPanel } from "./search-panel";
 
 type HeroBannerProps = {
   movie?: MovieSummary;
@@ -50,20 +51,35 @@ export function HeroBanner({
       <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent opacity-90 dark:from-black dark:via-black/40 dark:to-transparent" />
 
       {/* Mobile overlay nav */}
-      <div className="absolute left-0 right-0 top-0 flex items-center justify-between px-4 py-4 sm:hidden">
+      <div className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-4 py-4 sm:hidden">
         <span className="text-2xl font-black tracking-tight text-[#e50914]">
           N
         </span>
-        <div className="flex items-center gap-4 text-white/90">
-          <Cast className="h-5 w-5" />
+        <div className="flex items-center gap-3 text-white/90">
+          <SearchPanel />
           <UserRound className="h-5 w-5" />
         </div>
       </div>
-      <div className="absolute left-0 right-0 top-14 sm:hidden">
+      <div className="absolute left-0 right-0 top-14 z-30 sm:hidden">
         <div className="flex justify-center gap-8 text-sm font-semibold text-white drop-shadow">
-          <span>TV Shows</span>
-          <span>Movies</span>
-          <span>Categories</span>
+          <Link
+            href="#hero"
+            className="transition hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            TV Shows
+          </Link>
+          <Link
+            href="#popular"
+            className="transition hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            Movies
+          </Link>
+          <Link
+            href="#my-list"
+            className="transition hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            Categories
+          </Link>
         </div>
       </div>
 
