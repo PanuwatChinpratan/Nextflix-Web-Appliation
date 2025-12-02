@@ -31,20 +31,28 @@ npm run dev                 # เปิด http://localhost:3000 (หรือ 3
 
 ## สถาปัตยกรรมสั้น ๆ
 - App Router (Next.js) ใช้การเรนเดอร์ฝั่งเซิร์ฟเวอร์สำหรับหน้า Home (`app/page.tsx`) พร้อม ISR 5 นาที แล้วสุ่ม hero/สลับลำดับ popular ฝั่ง server ก่อนส่งลง client
-- Data layer ฝั่ง FE: fetch ผ่าน `lib/api-client.ts` ไปยัง NestJS เท่านั้น (ไม่คุย TMDB ตรง)
-- State:
-  - Favorites/My List: `useFavorites` (React Query + Nest favorites API)
-  - Hero/Popular: SSR + props (สุ่มฝั่ง server)
 - UI: Tailwind + shadcn/ui components (buttons, dropdown, skeleton, dialog), theme toggle + i18n (EN/TH)
 - Types: `lib/types/*` ใช้ร่วมกับ API responses
+- Layering (Clean Architecture แนวทางย่อ):
+  - Domain: interface + use-cases (`lib/domain/movies.ts`)
+  - Data: repository เชื่อม API (`lib/data/movie-repository.ts`, `lib/api-client.ts`)
+  - Use-cases ready-to-use: `lib/use-cases/movies.ts`
+  - Presentation: React Server/Client Components, hooks (`components`, `app/*`, `lib/hooks/*`)
+- State:
+  - Server data: React Query สำหรับ client states (loading/empty/error) ใน search, rows, favorites
+  - Favorites/My List: `useFavorites` (React Query + Nest favorites API)
+  - Hero/Popular: SSR + props (สุ่มฝั่ง server)
 
 ## ฟีเจอร์หลัก
 - Hero banner สุ่มจาก trending/popular พร้อมปุ่ม Play/More info
 - แถว Popular on Netflix + My List (ดึงจาก backend favorites)
-- หน้า detail `/movies/[id]`
+- หน้า detail `/movies/[id]` (ข้อมูล, คะแนน, เวลา, genres, ปุ่ม My List)
 - Theme light/dark, สวิตช์ภาษา EN/TH
 - Responsive ทุกขนาดจอ
 - Swagger docs ที่ `/docs` สำหรับทดสอบ API
+
+## CI/CD
+- GitHub Actions: `.github/workflows/ci.yml` รัน lint + build ฝั่ง frontend (Next.js) บน Node 20
 
 ## หมายเหตุที่ควรรู้
 - ต้องมี `TMDB_API_KEY` ใน backend `.env`
