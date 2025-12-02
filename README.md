@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nextflix Web Application
 
-## Getting Started
+Next.js 16 frontend + NestJS API gateway. UI ตามแบบ Netflix: hero เปลี่ยนสุ่ม, แถวหนัง, My List (ผ่าน backend favorites), i18n, theme light/dark, responsive ครบ.
 
-First, run the development server:
+## Setup (รวบรัด)
 
+### Backend (NestJS)
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd backend/my-app-backend
+npm install
+cp .env.example .env        # ตรวจว่า TMDB_API_KEY, DATABASE_URL, FRONTEND_URL ถูกต้อง
+npx prisma db push          # สร้าง collection Favorite (ถ้าใช้ Mongo)
+npm run start:dev           # API ที่ http://localhost:4000, Swagger ที่ http://localhost:4000/docs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Frontend (Next.js)
+```bash
+cd frontend/my-app
+npm install
+cp .env.example .env        # NEXT_PUBLIC_API_URL=http://localhost:4000
+npm run dev                 # เปิดที่ http://localhost:3000 (หรือ 3001 ถ้าปรับ)
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## สถาปัตยกรรมสั้น ๆ
+- App Router (Next.js) ใช้การเรนเดอร์ฝั่งเซิร์ฟเวอร์สำหรับหน้า Home (`app/page.tsx`) พร้อม ISR 5 นาที แล้วสุ่ม hero/สลับลำดับ popular ฝั่ง server ก่อนส่งลง client
+- Data layer ฝั่ง FE: fetch ผ่าน `lib/api-client.ts` ไปยัง NestJS เท่านั้น (ไม่คุย TMDB ตรง)
+- State:
+  - Favorites/My List: `useFavorites` (React Query + Nest favorites API)
+  - Hero/Popular: SSR + props (สุ่มฝั่ง server)
+- UI: Tailwind + shadcn/ui components (buttons, dropdown, skeleton, dialog), theme toggle + i18n (EN/TH)
+- Types: `lib/types/*` ใช้ร่วมกับ API responses
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ฟีเจอร์หลัก
+- Hero banner สุ่มจาก trending/popular พร้อมปุ่ม Play/More info
+- แถว Popular on Netflix + My List (ดึงจาก backend favorites)
+- หน้า detail `/movies/[id]`
+- Theme light/dark, สวิตช์ภาษา EN/TH
+- Responsive ทุกขนาดจอ
+- Swagger docs ที่ `/docs` สำหรับทดสอบ API
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## หมายเหตุที่ควรรู้
+- ต้องมี `TMDB_API_KEY` ใน backend `.env`
+- ถ้าไม่ตั้ง `DATABASE_URL` favorites จะเก็บ in-memory (หายเมื่อรีสตาร์ท)
+- Hash navigation (เมนูใน header) จะดึงเพจจาก cache ISR; hero จะสุ่มใหม่ทุก 5 นาทีตาม revalidate
