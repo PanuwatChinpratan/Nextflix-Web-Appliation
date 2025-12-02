@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Cast, Info, Play, UserRound } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -67,7 +68,12 @@ export function HeroBanner({
       </div>
 
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end gap-5 px-4 pb-20 pt-24 sm:px-10 lg:pb-24">
-        <div className="space-y-3 drop-shadow-[0_10px_24px_rgba(0,0,0,0.6)]">
+        <motion.div
+          className="space-y-3 drop-shadow-[0_10px_24px_rgba(0,0,0,0.6)]"
+          initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        >
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#e50914]">
             N Series
           </p>
@@ -80,9 +86,14 @@ export function HeroBanner({
           <p className="line-clamp-3 max-w-3xl text-sm text-foreground/80 dark:text-white/85 sm:line-clamp-4 sm:text-lg">
             {movie.overview}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <motion.div
+          className="flex flex-wrap items-center gap-3"
+          initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.55, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
           {playHref && (
             <Button
               size="lg"
@@ -110,7 +121,7 @@ export function HeroBanner({
               </Link>
             </Button>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
