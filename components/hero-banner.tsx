@@ -83,7 +83,7 @@ export function HeroBanner({
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end gap-5 px-4 pb-20 pt-24 sm:px-10 lg:pb-24">
+      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-center gap-5 px-4 pb-20 pt-24 sm:px-10 lg:pb-24">
         <motion.div
           className="space-y-3 drop-shadow-[0_10px_24px_rgba(0,0,0,0.6)]"
           initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
