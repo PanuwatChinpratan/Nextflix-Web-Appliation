@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Loader2, Search, X } from "lucide-react";
 
 import { MovieCard, MovieCardSkeleton } from "@/components/movie-card";
@@ -20,15 +20,19 @@ import { cn } from "@/lib/utils";
 
 export function SearchPanel() {
   const { t } = useI18n();
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useSyncExternalStore(
+    (onStoreChange) => {
+      onStoreChange();
+      return () => {};
+    },
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 220);
@@ -65,7 +69,7 @@ export function SearchPanel() {
     return t("search.results", { query: debouncedQuery });
   }, [debouncedQuery, t]);
 
-  if (!mounted) {
+  if (!isClient) {
     return (
       <button
         type="button"

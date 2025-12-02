@@ -1,5 +1,5 @@
 import { HomeContent } from "@/components/home-content";
-import { fetchPopularMovies, fetchTrendingMovies } from "@/lib/api-client";
+import { movieUseCases } from "@/lib/use-cases/movies";
 import type { MovieSummary, PaginatedMovies } from "@/lib/types/movies";
 
 export const revalidate = 300;
@@ -22,8 +22,8 @@ function shuffledResults(list?: PaginatedMovies): PaginatedMovies | undefined {
 
 export default async function Home() {
   const [trending, popular] = await Promise.all([
-    fetchTrendingMovies().catch(() => undefined),
-    fetchPopularMovies().catch(() => undefined),
+    movieUseCases.getTrending().catch(() => undefined),
+    movieUseCases.getPopular().catch(() => undefined),
   ]);
 
   const heroCandidates: MovieSummary[] = [
